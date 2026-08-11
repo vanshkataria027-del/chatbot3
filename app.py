@@ -1,22 +1,22 @@
-import json
+import json 
+import streamlit as st 
 
-faqs = []
+st.write("App started")
+
 with open("faqs.json", "r") as f:
     faqs = json.load(f)
+st.write("JSON load successfully")
 
 def get_answer(user_question):
     user_question = user_question.lower()
     for faq in faqs:
         if faq["question"].lower() in user_question:
             return faq["answer"]
-    return "Sorry, I don't have an answer for that yet."
+        return "Sorry, I don't have an answer for that yet."
+    st.title("chatbot3")
 
-print("Program started")
+    question = st.text_input("Ask me something:")
 
-while True:
-    q = input("Ask me something (or 'quit'): ")
-    if q.lower() == "quit":
-        break
-    print(get_answer(q))
-
-print("Program ended")
+    if question:
+        answer = get_answer(question)
+        st.write(answer)
