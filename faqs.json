@@ -4,7 +4,54 @@
         "answer": "Go to setting > Security > Reset Password." 
     },
     {
+        
+        "question": "how do I reset my password?",
+        "answer": "Go to Settings > Security > Reset Password."
+    },
+    {
         "question": "What are your working hours?",
-        "answer": "We are open Monday to saturday, 9 AM to 6 PM."
+        "answer": "We are open Monday to Saturday, 9 AM to 6 PM."
+    },
+    {
+        "question": "hi",
+        "answer": "Hello! How can I help you?"
+    },
+    {
+        "question": "How can I change my email?",
+        "answer": "Go to Settings > Account > Email and update your email address."
+    },
+    {
+        "question": "How can I contact support?",
+        "answer": "You can contact our support team through the Help & Support section."
+    },
+    {
+        "question": "Where can I find my order?",
+        "answer": "Go to My Orders to view your order status and tracking information."
+    },
+    {
+        "question": "How do I cancel my order?",
+        "answer": "Go to My Orders, select your order, and choose Cancel Order."
+    },
+    {
+        "question": "What is your return policy?",
+        "answer": "You can return eligible products within 30 days of delivery."
+    },
+    {
+        "question": "How long does delivery take?",
+        "answer": "Standard delivery usually takes 3 to 5 business days."
+    },
+    {
+        "question": "Do you offer refunds?",
+        "answer": "Yes, refunds are available for eligible returned or cancelled orders."
+    },
+    {
+        "question": "How can I update my address?",
+        "answer": "Go to Settings > Address and update your delivery address."
+    },
+    {
+        "question": "What payment methods do you accept?",
+        "answer": "We accept major debit cards, credit cards, UPI and other supported payment methods."
     }
 ]
+    
+    
