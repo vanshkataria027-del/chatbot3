@@ -1,11 +1,6 @@
 [
     {
         "question": "how do I reset my password?",
-        "answer": "Go to setting > Security > Reset Password." 
-    },
-    {
-        
-        "question": "how do I reset my password?",
         "answer": "Go to Settings > Security > Reset Password."
     },
     {
@@ -15,6 +10,26 @@
     {
         "question": "hi",
         "answer": "Hello! How can I help you?"
+    },
+    {
+        "question": "hello",
+        "answer": "Hey! How can I help you today?"
+    },
+    {
+        "question": "how are you",
+        "answer": "I'm doing great, thanks for asking! How can I help you?"
+    },
+    {
+        "question": "bye",
+        "answer": "Goodbye! Have a great day."
+    },
+    {
+        "question": "thanks",
+        "answer": "You're welcome!"
+    },
+    {
+        "question": "thank you",
+        "answer": "You're welcome!"
     },
     {
         "question": "How can I change my email?",
@@ -27,31 +42,5 @@
     {
         "question": "Where can I find my order?",
         "answer": "Go to My Orders to view your order status and tracking information."
-    },
-    {
-        "question": "How do I cancel my order?",
-        "answer": "Go to My Orders, select your order, and choose Cancel Order."
-    },
-    {
-        "question": "What is your return policy?",
-        "answer": "You can return eligible products within 30 days of delivery."
-    },
-    {
-        "question": "How long does delivery take?",
-        "answer": "Standard delivery usually takes 3 to 5 business days."
-    },
-    {
-        "question": "Do you offer refunds?",
-        "answer": "Yes, refunds are available for eligible returned or cancelled orders."
-    },
-    {
-        "question": "How can I update my address?",
-        "answer": "Go to Settings > Address and update your delivery address."
-    },
-    {
-        "question": "What payment methods do you accept?",
-        "answer": "We accept major debit cards, credit cards, UPI and other supported payment methods."
     }
 ]
-    
-    
