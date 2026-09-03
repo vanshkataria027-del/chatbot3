@@ -1,35 +1,49 @@
-import json
-import string
 import streamlit as st
+import ollama
 
-with open("faqs.json", "r") as f:
-    faqs = json.load(f)
+st.set_page_config(
+    page_title="My AI Chatbot",
+    page_icon="🤖"
+)
 
-def get_answer(user_question):
-    user_question = user_question.lower().translate(str.maketrans('','',string.punctuation))
-    for faq in faqs:
-        faq_question = faq["question"].lower().translate(str.maketrans('','',string.punctuation))
-        if faq_question in user_question:
-            return faq["answer"]
-    return "Sorry, I don't have an answer for that yet."
+st.title("🤖 My AI Chatbot")
+st.caption("Powered by Ollama • Llama 3.2")
 
-st.title("chatbot3")
-
+# Chat history
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-for msg in st.session_state.messages:
-    with st.chat_message(msg["role"]):
-        st.write(msg["content"])
+# Display previous messages
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
 
-question = st.chat_input("Ask me something:")
+# Chat input
+user_input = st.chat_input("Type your message...")
 
-if question:
-    st.session_state.messages.append({"role": "user", "content": question})
+if user_input:
+    # Show user message
+    st.session_state.messages.append({
+        "role": "user",
+        "content": user_input
+    })
+
     with st.chat_message("user"):
-        st.write(question)
+        st.markdown(user_input)
 
-    answer = get_answer(question)
-    st.session_state.messages.append({"role": "assistant", "content": answer})
+    # Get AI response
     with st.chat_message("assistant"):
-        st.write(answer)
+        with st.spinner("Thinking..."):
+            response = ollama.chat(
+                model="llama3.2",
+                messages=st.session_state.messages
+            )
+
+            answer = response["message"]["content"]
+            st.markdown(answer)
+
+    # Save AI response
+    st.session_state.messages.append({
+        "role": "assistant",
+        "content": answer
+    })
