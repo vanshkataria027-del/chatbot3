@@ -10,7 +10,8 @@ st.title("🤖 My AI Chatbot")
 st.caption("Powered by Gemini")
 
 # Gemini API key
-genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
+genai.configure(api_key=st.secrets["AQ.Ab8RN6Kd4PvDeAiaDNxs-4FXQy93mXbKKINck6M17Xs-EBU4-Qs"]
+"])
 
 model = genai.GenerativeModel("gemini-1.5-flash")
 
