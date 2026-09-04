@@ -1,5 +1,5 @@
 import streamlit as st
-import google.genai as genai
+from google import genai
 
 st.set_page_config(
     page_title="My AI Chatbot",
