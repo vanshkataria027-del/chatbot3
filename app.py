@@ -1,5 +1,5 @@
 import streamlit as st
-import ollama
+import google.generativeai as genai
 
 st.set_page_config(
     page_title="My AI Chatbot",
@@ -7,7 +7,12 @@ st.set_page_config(
 )
 
 st.title("🤖 My AI Chatbot")
-st.caption("Powered by Ollama • Llama 3.2")
+st.caption("Powered by Gemini")
+
+# Gemini API key
+genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
+
+model = genai.GenerativeModel("gemini-1.5-flash")
 
 # Chat history
 if "messages" not in st.session_state:
@@ -22,7 +27,6 @@ for message in st.session_state.messages:
 user_input = st.chat_input("Type your message...")
 
 if user_input:
-    # Show user message
     st.session_state.messages.append({
         "role": "user",
         "content": user_input
@@ -31,18 +35,13 @@ if user_input:
     with st.chat_message("user"):
         st.markdown(user_input)
 
-    # Get AI response
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
-            response = ollama.chat(
-                model="llama3.2",
-                messages=st.session_state.messages
-            )
+            response = model.generate_content(user_input)
+            answer = response.text
 
-            answer = response["message"]["content"]
-            st.markdown(answer)
+        st.markdown(answer)
 
-    # Save AI response
     st.session_state.messages.append({
         "role": "assistant",
         "content": answer
