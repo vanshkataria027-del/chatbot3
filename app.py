@@ -14,7 +14,7 @@ client = genai.Client(
     api_key=st.secrets["GEMINI_API_KEY"]
 )
 
-model = model = "gemini-3.8-flash"
+model = "gemini-3.8-flash"
 
 # Chat history
 if "messages" not in st.session_state:
@@ -28,6 +28,7 @@ for message in st.session_state.messages:
 # User input
 if prompt := st.chat_input("Type your message..."):
 
+    # Add user message
     st.session_state.messages.append(
         {"role": "user", "content": prompt}
     )
@@ -35,16 +36,26 @@ if prompt := st.chat_input("Type your message..."):
     with st.chat_message("user"):
         st.markdown(prompt)
 
+    # Send complete conversation to Gemini
+    contents = []
+
+    for message in st.session_state.messages:
+        contents.append(
+            f"{message['role']}: {message['content']}"
+        )
+
     response = client.models.generate_content(
         model=model,
-        contents=prompt
+        contents="\n\n".join(contents)
     )
 
     answer = response.text
 
+    # Display response
     with st.chat_message("assistant"):
         st.markdown(answer)
 
+    # Save assistant response
     st.session_state.messages.append(
         {"role": "assistant", "content": answer}
-    )
+        )
