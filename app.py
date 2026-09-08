@@ -1,5 +1,7 @@
+import time
 import streamlit as st
 from google import genai
+from google.genai import types
 
 st.set_page_config(
     page_title="My AI Chatbot",
@@ -36,7 +38,7 @@ if prompt := st.chat_input("Type your message..."):
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    # Send complete conversation to Gemini
+    # Send conversation
     contents = []
 
     for message in st.session_state.messages:
@@ -44,10 +46,38 @@ if prompt := st.chat_input("Type your message..."):
             f"{message['role']}: {message['content']}"
         )
 
-    response = client.models.generate_content(
-        model=model,
-        contents="\n\n".join(contents)
-    )
+    # Gemini request with retry
+    response = None
+
+    for attempt in range(3):
+        try:
+            response = client.models.generate_content(
+                model=model,
+                contents="\n\n".join(contents),
+                config=types.GenerateContentConfig(
+                    thinking_config=types.ThinkingConfig(
+                        thinking_level="low"
+                    ),
+                    max_output_tokens=1000
+                )
+            )
+            break
+
+        except Exception as e:
+            error_text = str(e)
+
+            if "503" in error_text or "UNAVAILABLE" in error_text:
+                if attempt < 2:
+                    time.sleep(2 ** attempt)
+                else:
+                    st.error(
+                        "Gemini is temporarily busy. "
+                        "Please try again in a few seconds."
+                    )
+                    st.stop()
+            else:
+                st.error(f"Gemini error: {e}")
+                st.stop()
 
     answer = response.text
 
@@ -58,4 +88,4 @@ if prompt := st.chat_input("Type your message..."):
     # Save assistant response
     st.session_state.messages.append(
         {"role": "assistant", "content": answer}
-        )
+    )
