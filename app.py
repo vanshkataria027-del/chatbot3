@@ -75,6 +75,17 @@ if prompt := st.chat_input("Type your message..."):
                         "Please try again in a few seconds."
                     )
                     st.stop()
+
+            elif "429" in error_text or "RESOURCE_EXHAUSTED" in error_text:
+                if attempt < 2:
+                    time.sleep(10)
+                else:
+                    st.error(
+                        "Free tier ka quota khatam ho gaya hai. "
+                        "1 minute baad try karein."
+                    )
+                    st.stop()
+
             else:
                 st.error(f"Gemini error: {e}")
                 st.stop()
