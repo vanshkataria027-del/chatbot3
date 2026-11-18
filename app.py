@@ -16,7 +16,7 @@ client = genai.Client(
     api_key=st.secrets["GEMINI_API_KEY"]
 )
 
-model = "gemini-3.6-flash"
+MODELS = ["gemini-3.6-flash", "gemini-3.5-flash", "gemini-2.5-flash"]
 
 # Chat history
 if "messages" not in st.session_state:
