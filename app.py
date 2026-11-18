@@ -17,7 +17,7 @@ client = genai.Client(
 )
 
 MODELS = ["gemini-3.6-flash", "gemini-3.5-flash", "gemini-2.5-flash"]
-
+model = MODELS[0]
 # Chat history
 if "messages" not in st.session_state:
     st.session_state.messages = []
