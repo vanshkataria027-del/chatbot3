@@ -17,7 +17,7 @@ client = genai.Client(
 )
 
 MODELS = ["gemini-3.6-flash", "gemini-3.5-flash", "gemini-2.5-flash"]
-model = MODELS[0]
+
 # Chat history
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -38,57 +38,45 @@ if prompt := st.chat_input("Type your message..."):
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    # Send conversation
+    # Send conversation (sirf last 6 messages)
     contents = []
+    for message in st.session_state.messages[-6:]:
+        contents.append(f"{message['role']}: {message['content']}")
 
-    for message in st.session_state.messages:
-        contents.append(
-            f"{message['role']}: {message['content']}"
-        )
-
-    # Gemini request with retry
+    # Gemini request: har model try karo
     response = None
+    last_error = ""
 
-    for attempt in range(3):
+    for m in MODELS:
         try:
-            response = client.models.generate_content(
-                model=model,
-                contents="\n\n".join(contents),
-                config=types.GenerateContentConfig(
+            if m.startswith("gemini-3"):
+                config = types.GenerateContentConfig(
                     thinking_config=types.ThinkingConfig(
                         thinking_level="low"
                     ),
+                    max_output_tokens=1000,
+                )
+            else:
+                config = types.GenerateContentConfig(
                     max_output_tokens=1000
                 )
+
+            response = client.models.generate_content(
+                model=m,
+                contents="\n\n".join(contents),
+                config=config,
             )
             break
-
         except Exception as e:
-            error_text = str(e)
+            last_error = str(e)
+            time.sleep(1)
 
-            if "503" in error_text or "UNAVAILABLE" in error_text:
-                if attempt < 2:
-                    time.sleep(2 ** attempt)
-                else:
-                    st.error(
-                        "Gemini is temporarily busy. "
-                        "Please try again in a few seconds."
-                    )
-                    st.stop()
-
-            elif "429" in error_text or "RESOURCE_EXHAUSTED" in error_text:
-                if attempt < 2:
-                    time.sleep(10)
-                else:
-                    st.error(
-                        "Free tier ka quota khatam ho gaya hai. "
-                        "1 minute baad try karein."
-                    )
-                    st.stop()
-
-            else:
-                st.error(f"Gemini error: {e}")
-                st.stop()
+    if response is None:
+        if "429" in last_error or "RESOURCE_EXHAUSTED" in last_error:
+            st.error("Free tier ka quota khatam ho gaya hai. 1 minute baad try karein.")
+        else:
+            st.error("Gemini is temporarily busy. Please try again in a few seconds.")
+        st.stop()
 
     answer = response.text
 
